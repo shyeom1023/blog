@@ -1,0 +1,21 @@
+server:
+  port: 10010
+  shutdown: graceful
+management:
+  server:
+    port: 10011
+spring:
+  profiles:
+    include:
+    group:
+      local:
+
+    active: local
+  application:
+    name: business
+  lifecycle:
+    timeout-per-shutdown-phase: 15s
+#  cloud:
+#    stream:
+#      function:
+#        autodetect: false

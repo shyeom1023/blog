@@ -1,0 +1,6 @@
+#swagger:
+#  host: localhost:${server.port}
+#  base-package: com.example.blog
+
+data-portal:
+  endpoint: "https://api.odcloud.kr/api"

@@ -1,0 +1,9 @@
+###
+POST {{business}}/v1/business/internal/business/status
+Content-Type: application/json
+
+{
+  "bNo": [
+    "0000000000"
+  ]
+}
