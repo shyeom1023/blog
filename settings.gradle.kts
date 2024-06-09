@@ -5,7 +5,8 @@ listOf(
         "exam-module",
         "data-business",
         "benchmark",
-        "benchmark-def"
+        "benchmark-def",
+        "mqtt",
 ).forEach {
     include(it)
     project(":$it").projectDir = File("$rootDir/modules/$it")

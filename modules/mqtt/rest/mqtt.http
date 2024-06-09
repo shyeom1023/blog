@@ -1,0 +1,3 @@
+### publish
+GET http://localhost:8080/publish?message=hello23
+Content-Type: application/json
