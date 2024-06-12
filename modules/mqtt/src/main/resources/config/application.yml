@@ -3,3 +3,9 @@ mqtt:
   port: 1883 #(1)
   qos: 2
   topic: sample
+
+influxdb:
+  url: http://localhost:8086
+  token: f2b8xn6SzYE2WZY-pYV3qGKy55EIGK0WjpBpgt8xvyiUUEmY_UjxCNZQHWmBu1emsL1C3cp8YTKj3cQLvxPh7Q==
+  org: Test
+  bucket: test

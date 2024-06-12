@@ -13,5 +13,8 @@ dependencies {
     implementation("org.springframework.integration:spring-integration-mqtt")
     implementation("org.springframework.integration:spring-integration-jmx")
 
+    // influx
+    implementation("com.influxdb:influxdb-client-java:6.0.0")
+
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }

@@ -5,11 +5,10 @@ import org.springframework.context.annotation.Configuration
 
 
 @Configuration // (1)
-
 @ConfigurationProperties(prefix = "mqtt")
 data class MqttProperties(
         var url: String = "",
-        var port: Int  = 0,
+        var port: Int = 0,
         var qos: Int = 0,
         var topic: String = "",
 ) {
