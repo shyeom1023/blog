@@ -48,7 +48,11 @@ docker volume create influxdb-storage
 docker run -d --name influxdb -p 8086:8086 -v influxdb-storage:/var/lib/influxdb2 influxdb:latest
 ```
 
+> 2024-06-12 네트워크 설정 추가
 
+```
+docker run -d --name influxdb --network=grafana-network -p 8086:8086 -v influxdb-storage:/var/lib/influxdb2 influxdb:latest
+```
 
 해당 포트로 접속하니 계정생성 후 화면
 
@@ -309,3 +313,231 @@ com.influxdb.exceptions.UnprocessableEntityException: failure writing points to 
 - **`_stop`**: 쿼리에서 데이터 검색을 중단할 시간입니다. 이 값은 데이터 시리즈의 끝 시간을 나타냅니다.
 
 Flux 쿼리의 `range` 함수에서 이 두 값을 사용하여 시간 범위를 지정합니다. 예를 들어, 특정 시간 범위 내의 모든 데이터를 조회하고자 할 때 사용됩니다.
+
+
+
+# Grafana
+
+### Docker 볼륨 생성
+
+1. Docker 볼륨을 생성합니다:
+
+   ```
+   docker volume create grafana-storage
+   ```
+
+2. Docker 실행
+
+   ```
+   docker run -d -p 3000:3000 --name=grafana --network=grafana-network -e "GF_SECURITY_ADMIN_USER=admin" -e "GF_SECURITY_ADMIN_PASSWORD=secret" -e "GF_SERVER_HTTP_HEADER_ACCESS_CONTROL_ALLOW_ORIGIN=*" -v grafana-storage:/var/lib/grafana grafana/grafana
+   ```
+
+
+
+### 대시보드 생성
+
+대시보드에 들어오면 해당 화면이 나타남 나는 컴포넌트화 하려고 나눠놨음
+
+![image-20240617161234606](C:\Users\Yeom\AppData\Roaming\Typora\typora-user-images\image-20240617161234606.png)
+
+아래처럼 보고싶은 컴포넌트로 구성을 함
+
+![image-20240617161320612](C:\Users\Yeom\AppData\Roaming\Typora\typora-user-images\image-20240617161320612.png)
+
+일단 New로 대시보드 생
+
+![image-20240617161351240](C:\Users\Yeom\AppData\Roaming\Typora\typora-user-images\image-20240617161351240.png)
+
++Add visualization 버튼을 클
+
+![image-20240617161432128](C:\Users\Yeom\AppData\Roaming\Typora\typora-user-images\image-20240617161432128.png)
+
+influxdb를 클릭
+
+![image-20240617161509292](C:\Users\Yeom\AppData\Roaming\Typora\typora-user-images\image-20240617161509292.png)
+
+아래와 같은 화면이 나타남
+
+![image-20240617161615342](C:\Users\Yeom\AppData\Roaming\Typora\typora-user-images\image-20240617161615342.png)
+
+
+
+#### 쿼리
+
+- influxdb 2.x 버전에서는 flux 라는 문법으로 데이터를 조회해야함
+- Add query를 통해서 여러 쿼리에 대한 결과값을 나타낼 수 있음
+
+![image-20240617161644017](C:\Users\Yeom\AppData\Roaming\Typora\typora-user-images\image-20240617161644017.png)
+
+쿼리 결과
+
+![image-20240617162152102](C:\Users\Yeom\AppData\Roaming\Typora\typora-user-images\image-20240617162152102.png)
+
+
+
+### 패널
+
+데이터에 대한 화면 내용에 대해서 아래와 같은 형태로 나타낼 수 있음
+
+![image-20240617162306714](C:\Users\Yeom\AppData\Roaming\Typora\typora-user-images\image-20240617162306714.png)
+
+![image-20240617162251652](C:\Users\Yeom\AppData\Roaming\Typora\typora-user-images\image-20240617162251652.png)
+
+패널에서 시간값을 변경하면 더 많은 데이터를 볼 수 있음
+
+![image-20240617162618859](C:\Users\Yeom\AppData\Roaming\Typora\typora-user-images\image-20240617162618859.png)
+
+패널을 선택하고 우측에 있는 기능을 통해 UI/UX를 가공을 할 수 있음
+
+![image-20240617162716099](C:\Users\Yeom\AppData\Roaming\Typora\typora-user-images\image-20240617162716099.png)
+
+아래와 같은 화면에서 조정이 가능함
+
+![image-20240617162815618](C:\Users\Yeom\AppData\Roaming\Typora\typora-user-images\image-20240617162815618.png)
+
+
+
+- Panel options
+  - 패널명 변경
+- Value options
+  - 하나의 값을 볼지, 다중 값을 볼지 선택이 가능함
+- Stat styles
+  - text 스타일 제어
+  - 배경 스타일 제어
+  - 그래프 스타일 제어
+- Text size
+  - 글자 크기 제어
+- Standard option
+  - 숫자 단위
+  - 최소 값
+  - 최대 값
+  - 정수형으로 볼지, 실수형으로 볼지
+  - display name 설
+  - 색상 제어
+- Data links
+  - 데이터의 링크걸기
+  - 클릭시 해당 링크로 이
+- Value mmappings
+  - 특정 값은 다른 값으로 나타낼 수 있음
+- Thresholds
+  - 특정 값에 따라 색상 변경
+- +Add field override
+  - 특정 필드에 대해서만 위에 있는 내용 따로 적용이 가능
+
+
+
+커스텀하게 적용하면 아래와 같이 적용 가능
+
+![image-20240617163728465](C:\Users\Yeom\AppData\Roaming\Typora\typora-user-images\image-20240617163728465.png)
+
+
+
+대시보드 저장
+
+![image-20240617163757439](C:\Users\Yeom\AppData\Roaming\Typora\typora-user-images\image-20240617163757439.png)
+
+
+
+아래와 같은 대시보드가 생김
+
+![image-20240617163816271](C:\Users\Yeom\AppData\Roaming\Typora\typora-user-images\image-20240617163816271.png)
+
+해당 패널에 대해서 share를 누르고 embed를 누르면 iframe 형태로 제공이 가능
+
+![image-20240617163843472](C:\Users\Yeom\AppData\Roaming\Typora\typora-user-images\image-20240617163843472.png)
+
+외부 도메인에서 아래와 같이 사용이 가능
+
+![image-20240617163924424](C:\Users\Yeom\AppData\Roaming\Typora\typora-user-images\image-20240617163924424.png)
+
+# 도커를 사용하면서 생긴 이슈
+
+https://bluayer.com/45
+
+네트워크 설정을 해야 되며, --name으로 설정한 것으로 통신을 할 수 있음
+
+
+
+### 그라파나 iframe 이슈
+
+iframe을 적용하다보니 아래 에러가 발생
+
+```
+Refused to display 'http://localhost:3000/' in a frame because it set 'X-Frame-Options' to 'deny'.
+```
+
+원인을 파악하니 /etc/grafana/grafana.ini 해당 파일에 아래 allow_embedding 값이 true여야 함
+
+```
+[security]
+allow_embedding = true
+```
+
+파일 직접 변경이 잘 안되서 아래와 같이 진행
+
+```
+# 파일 복제
+docker cp grafana:/etc/grafana/grafana.ini ./grafana.ini
+
+# 파일내용 수기로 변경
+
+# 수정된 내용을 다시 원본에 덮어쓰기
+docker cp ./grafana.ini grafana:/etc/grafana/grafana.ini
+
+# 도커 그라파나 재시작
+docker restart grafana
+```
+
+![image-20240617161133115](C:\Users\Yeom\AppData\Roaming\Typora\typora-user-images\image-20240617161133115.png)
+
+# 설계
+
+## grafana 화면 설정
+
+- tags
+  - 장비명
+    - 포크레인
+    - 지게차
+    - 불도저
+  - 제품 ID
+    - 유니크한 값 ( 장비명 + 영문 순서)
+      - 포크레인A
+      - 지게차B
+      - 불도저C
+- fields
+  - 온도센서
+  - 작동 여부 (시동여부)
+  - 공사현장
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
