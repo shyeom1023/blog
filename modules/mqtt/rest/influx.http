@@ -3,15 +3,14 @@ POST http://localhost:8080/influxdb/write
 Content-Type: application/json
 
 {
-  "measurement": "home",
+  "measurement": "equipment",
   "tags": {
-    "location": "west",
-    "simple": "test"
+    "name": "포크레인",
+    "prodId": "포크레인A"
   },
   "fields": {
-    "field1": 5,
-    "field2": 5.0,
-    "field3": 5
+    "temperature": 70.0,
+    "use": true
   }
 }
 
