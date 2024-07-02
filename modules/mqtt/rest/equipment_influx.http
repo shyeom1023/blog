@@ -1,0 +1,31 @@
+### equipment - 포크레인A
+POST http://localhost:8080/influxdb/write
+Content-Type: application/json
+
+{
+  "measurement": "equipment",
+  "tags": {
+    "name": "포크레인",
+    "prodId": "포크레인A"
+  },
+  "fields": {
+    "temperature": 70.0,
+    "use": true
+  }
+}
+
+### equipment - 포크레인 B
+POST http://localhost:8080/influxdb/write
+Content-Type: application/json
+
+{
+  "measurement": "equipment",
+  "tags": {
+    "name": "포크레인",
+    "prodId": "포크레인B"
+  },
+  "fields": {
+    "temperature": 120.0,
+    "use": false
+  }
+}
