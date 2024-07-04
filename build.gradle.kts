@@ -34,16 +34,20 @@ subprojects {
             kotlinOptions {
                 freeCompilerArgs = listOf("-Xjsr305=strict")
                 jvmTarget = "1.8"
+//                jvmTarget = "11"
             }
         }
 
         withType<JavaCompile> {
             sourceCompatibility = "1.8"
             targetCompatibility = "1.8"
+//            sourceCompatibility = "11"
+//            targetCompatibility = "11"
         }
 
         withType<Test> {
             useJUnitPlatform()
+            jvmArgs("--add-opens=java.base/java.nio=ALL-UNNAMED")
         }
 
     }
