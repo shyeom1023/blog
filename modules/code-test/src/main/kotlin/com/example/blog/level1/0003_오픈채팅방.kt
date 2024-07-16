@@ -20,36 +20,25 @@ private class Solution3 {
 
     fun solution(record: Array<String>): Array<String> {
         var answer = arrayOf<String>()
-        val uidList = mutableSetOf<String>()
-
-        // uid 추출
-        record.forEach {
-            val items = it.split(" ")
-            uidList.add(items[1])
-        }
 
         val uidMap = mutableMapOf<String, String>()
 
         // uid 맵핑된 이름 정보 추출
-        uidList.forEach { uid ->
-            val lastItem =
-                record.lastOrNull { it.contains(uid) && (it.contains("Enter") || it.contains("Change")) }
-
-            lastItem?.let {
-                val item = it.split(" ")
-                uidMap[uid] = item[2]
+        record.forEach {
+            val item = it.split(" ")
+            if (item[0].contains("Enter") || item[0].contains("Change")) {
+                uidMap[item[1]] = item[2]
             }
         }
 
         val result = mutableListOf<String>()
 
-        record.forEachIndexed { index, s ->
-            uidMap.forEach { (k, v) ->
-                if (s.contains(k) && s.contains("Enter")) {
-                    result.add(v + "님이 들어왔습니다.")
-                } else if (s.contains(k) && s.contains("Leave")) {
-                    result.add(v + "님이 나갔습니다.")
-                }
+        record.forEach {
+            val item = it.split(" ")
+            if (item[0].contains("Enter")) {
+                result.add(uidMap[item[1]] + "님이 들어왔습니다.")
+            } else if (item[0].contains("Leave")) {
+                result.add(uidMap[item[1]] + "님이 나갔습니다.")
             }
         }
 
