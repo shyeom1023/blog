@@ -72,3 +72,141 @@ Assume that:
 > - each element of array A is an integer within the range [−1,000..1,000].
 
 In your solution, focus on ***\*correctness\****. The performance of your solution will not be the focus of the assessment.
+
+
+
+## [OddOccurrencesInArray](https://app.codility.com/programmers/lessons/2-arrays/odd_occurrences_in_array/)
+
+A non-empty array A consisting of N integers is given. The array contains an odd number of elements, and each element of the array can be paired with another element that has the same value, except for one element that is left unpaired.
+
+For example, in array A such that:
+
+```
+  A[0] = 9  A[1] = 3  A[2] = 9  A[3] = 3  A[4] = 9  A[5] = 7  A[6] = 9
+```
+
+> - the elements at indexes 0 and 2 have value 9,
+> - the elements at indexes 1 and 3 have value 3,
+> - the elements at indexes 4 and 6 have value 9,
+> - the element at index 5 has value 7 and is unpaired.
+
+Write a function:
+
+> ```
+> fun solution(A: IntArray): Int
+> ```
+
+that, given an array A consisting of N integers fulfilling the above conditions, returns the value of the unpaired element.
+
+For example, given array A such that:
+
+```
+  A[0] = 9  A[1] = 3  A[2] = 9  A[3] = 3  A[4] = 9  A[5] = 7  A[6] = 9
+```
+
+the function should return 7, as explained in the example above.
+
+Write an ***\*efficient\**** algorithm for the following assumptions:
+
+> - N is an odd integer within the range [1..1,000,000];
+> - each element of array A is an integer within the range [1..1,000,000,000];
+> - all but one of the values in A occur an even number of times.
+
+
+
+### 시간 복잡도 줄이는법
+
+나는 Map으로 문제를 해결하려고 했지만, 공간 복잡도 가 O(n) 여서 2초이상 걸리는 이슈가 있었다.
+
+GPT에게 확인한 결과 xor를 하면 공간복잡도를 줄일 수 있다고 하였다.
+
+```kotlin
+fun solution(A: IntArray): Int {
+    var unpaired = 0
+
+    for (number in A) {
+        unpaired = unpaired xor number
+    }
+
+    return unpaired
+}
+```
+
+### 설명:
+
+- `xor` 연산을 사용하여 배열의 모든 요소를 하나씩 XOR합니다.
+- 짝을 이루는 모든 요소는 XOR 연산 후 0이 됩니다.
+- 결국 짝을 이루지 않는 요소 하나만 남게 되며, 그것이 곧 정답입니다.
+
+
+
+### XOR 연산의 중요한 특성
+
+1. **자기 자신과의 XOR**:
+   - `a ^ a = 0`
+   - 동일한 값끼리 XOR 연산을 하면 0이 됩니다.
+2. **0과의 XOR**:
+   - `a ^ 0 = a`
+   - 0과 어떤 숫자를 XOR하면 그 숫자 자체가 나옵니다.
+3. **교환 법칙**:
+   - XOR 연산은 교환 법칙이 성립합니다. 즉, 순서에 상관없이 같은 결과를 얻습니다.
+   - `a ^ b ^ a = b ^ (a ^ a) = b ^ 0 = b`
+
+### XOR을 이용한 문제 해결 방법
+
+이 문제에서는 배열에 있는 모든 숫자를 한 번씩 XOR 연산합니다. 짝이 맞는 숫자는 XOR 연산으로 0이 되고, 짝이 없는 숫자만 남게 됩니다.
+
+예를 들어, 배열 `A = [9, 3, 9, 3, 9, 7, 9]`가 있을 때 XOR 연산을 순서대로 적용해 봅시다:
+
+1. `0 ^ 9 = 9`
+2. `9 ^ 3 = 10`
+3. `10 ^ 9 = 3`
+4. `3 ^ 3 = 0`
+5. `0 ^ 9 = 9`
+6. `9 ^ 7 = 14`
+7. `14 ^ 9 = 7`
+
+결국 남는 값은 7이며, 이는 배열에서 유일하게 짝이 없는 숫자입니다.
+
+### `Map`과 XOR의 차이점
+
+- Map 방식
+
+  :
+
+  - 각 요소를 키로 저장하고, 해당 키가 이미 존재하면 삭제하는 방식입니다. 결국 남아있는 키가 짝이 없는 요소입니다.
+  - 이 방식은 O(N)의 시간 복잡도와 O(N)의 공간 복잡도를 가집니다.
+
+- XOR 방식
+
+  :
+
+  - 각 요소를 순서대로 XOR 연산합니다. 짝이 있는 요소는 XOR 연산으로 인해 사라지고, 유일하게 남은 값이 짝이 없는 요소입니다.
+  - 이 방식은 O(N)의 시간 복잡도와 O(1)의 공간 복잡도를 가집니다.
+
+### XOR 연산의 비트 연산
+
+우선, 9와 3을 이진수로 표현해봅시다:
+
+- 9 (십진수) = `1001` (이진수)
+- 3 (십진수) = `0011` (이진수)
+
+이제, 각 비트를 XOR 연산해보겠습니다:
+
+```
+  1001  (9 in binary)
+^ 0011  (3 in binary)
+---------
+  1010  (result in binary, which is 10 in decimal)
+```
+
+### XOR 연산 단계:
+
+- 첫 번째 비트: `1 ^ 0 = 1`
+- 두 번째 비트: `0 ^ 0 = 0`
+- 세 번째 비트: `0 ^ 1 = 1`
+- 네 번째 비트: `1 ^ 1 = 0`
+
+### 요약
+
+XOR 방식은 데이터를 저장하지 않고 연산의 특성을 이용해 문제를 해결합니다. 따라서 공간 복잡도를 크게 줄이고 효율적으로 문제를 해결할 수 있습니다. 이 접근법은 매우 유용하고, 특히 짝이 맞지 않는 요소를 찾는 문제에서 자주 사용됩니다.
