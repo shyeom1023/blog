@@ -210,3 +210,36 @@ fun solution(A: IntArray): Int {
 ### 요약
 
 XOR 방식은 데이터를 저장하지 않고 연산의 특성을 이용해 문제를 해결합니다. 따라서 공간 복잡도를 크게 줄이고 효율적으로 문제를 해결할 수 있습니다. 이 접근법은 매우 유용하고, 특히 짝이 맞지 않는 요소를 찾는 문제에서 자주 사용됩니다.
+
+
+
+## [FrogJmp](https://app.codility.com/programmers/lessons/3-time_complexity/frog_jmp/)
+
+A small frog wants to get to the other side of the road. The frog is currently located at position X and wants to get to a position greater than or equal to Y. The small frog always jumps a fixed distance, D.
+
+Count the minimal number of jumps that the small frog must perform to reach its target.
+
+Write a function:
+
+> ```
+> fun solution(X: Int, Y: Int, D: Int): Int
+> ```
+
+that, given three integers X, Y and D, returns the minimal number of jumps from position X to a position equal to or greater than Y.
+
+For example, given:
+
+```
+  X = 10  Y = 85  D = 30
+```
+
+the function should return 3, because the frog will be positioned as follows:
+
+> - after the first jump, at position 10 + 30 = 40
+> - after the second jump, at position 10 + 30 + 30 = 70
+> - after the third jump, at position 10 + 30 + 30 + 30 = 100
+
+Write an ***\*efficient\**** algorithm for the following assumptions:
+
+> - X, Y and D are integers within the range [1..1,000,000,000];
+> - X ≤ Y.
