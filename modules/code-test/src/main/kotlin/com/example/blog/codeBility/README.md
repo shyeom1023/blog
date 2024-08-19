@@ -510,3 +510,94 @@ for (i in booleanArray.indices) {
 ### **결론**
 
 `BooleanArray`는 메모리 효율적이고 빠른 성능을 제공하며, 불리언 값을 저장하는 데 최적화된 데이터 구조입니다. 배열의 연속적 메모리 블록 덕분에 메모리 접근이 빠르고 간단한 연산을 수행할 때 유용합니다.
+
+## [MaxCounters](https://app.codility.com/programmers/lessons/4-counting_elements/max_counters/)
+
+You are given N counters, initially set to 0, and you have two possible operations on them:
+
+> - *increase(X)* − counter X is increased by 1,
+> - *max counter* − all counters are set to the maximum value of any counter.
+
+A non-empty array A of M integers is given. This array represents consecutive operations:
+
+> - if A[K] = X, such that 1 ≤ X ≤ N, then operation K is increase(X),
+> - if A[K] = N + 1 then operation K is max counter.
+
+For example, given integer N = 5 and array A such that:
+
+```
+    A[0] = 3    A[1] = 4    A[2] = 4    A[3] = 6    A[4] = 1    A[5] = 4    A[6] = 4
+```
+
+the values of the counters after each consecutive operation will be:
+
+```
+    (0, 0, 1, 0, 0)    (0, 0, 1, 1, 0)    (0, 0, 1, 2, 0)    (2, 2, 2, 2, 2)    (3, 2, 2, 2, 2)    (3, 2, 2, 3, 2)    (3, 2, 2, 4, 2)
+```
+
+The goal is to calculate the value of every counter after all operations.
+
+Write a function:
+
+> ```
+> fun solution(N: Int, A: IntArray): IntArray
+> ```
+
+that, given an integer N and a non-empty array A consisting of M integers, returns a sequence of integers representing the values of the counters.
+
+Result array should be returned as an array of integers.
+
+For example, given:
+
+```
+    A[0] = 3    A[1] = 4    A[2] = 4    A[3] = 6    A[4] = 1    A[5] = 4    A[6] = 4
+```
+
+the function should return [3, 2, 2, 4, 2], as explained above.
+
+Write an ***\*efficient\**** algorithm for the following assumptions:
+
+> - N and M are integers within the range [1..100,000];
+> - each element of array A is an integer within the range [1..`N + 1`].
+
+
+
+### 문제 풀이
+
+해당 문제에서 `N+1` 일때 나는 `map`을 다시 셋팅해서 이슈가 있었다.
+
+`N+1` 일때는 `lastUpdate `값만 따로 추출 해놓고, 마지막의 한번만 셋팅 해주는게 시간 복잡도로써 이슈가 없다.
+
+그리고 `N+1`이 아닐때는 `index`로 추출한 값이 `lastUpdate` 값이랑 같으면 해당 값으로 셋팅 후 기존 로직 수행
+
+```kotlin
+        fun solution(N: Int, A: IntArray): IntArray {
+            val counter = IntArray(N)
+            var maxCounter = 0
+            var lastUpdate = 0
+
+            A.forEach {
+                if (N + 1 == it) {
+                    lastUpdate = maxCounter
+                } else {
+                    val index = it - 1
+                    if (counter[index] < lastUpdate) {
+                        counter[index] = lastUpdate
+                    }
+
+                    counter[index]++
+
+                    if (counter[index] > maxCounter) {
+                        maxCounter = counter[index]
+                    }
+                }
+            }
+
+            counter.forEachIndexed { index, it ->
+                if (lastUpdate > it) counter[index] = lastUpdate
+            }
+
+            return counter
+        }
+```
+
