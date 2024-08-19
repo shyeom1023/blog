@@ -360,3 +360,153 @@ Write an ***\*efficient\**** algorithm for the following assumptions:
 
 > - N and X are integers within the range [1..100,000];
 > - each element of array A is an integer within the range [1..X].
+
+
+
+## [PermCheck](https://app.codility.com/programmers/lessons/4-counting_elements/perm_check/)
+
+A non-empty array A consisting of N integers is given.
+
+A *permutation* is a sequence containing each element from 1 to N once, and only once.
+
+For example, array A such that:
+
+```
+    A[0] = 4    A[1] = 1    A[2] = 3    A[3] = 2
+```
+
+is a permutation, but array A such that:
+
+```
+    A[0] = 4    A[1] = 1    A[2] = 3
+```
+
+is not a permutation, because value 2 is missing.
+
+The goal is to check whether array A is a permutation.
+
+Write a function:
+
+> ```
+> fun solution(A: IntArray): Int
+> ```
+
+that, given an array A, returns 1 if array A is a permutation and 0 if it is not.
+
+For example, given array A such that:
+
+```
+    A[0] = 4    A[1] = 1    A[2] = 3    A[3] = 2
+```
+
+the function should return 1.
+
+Given array A such that:
+
+```
+    A[0] = 4    A[1] = 1    A[2] = 3
+```
+
+the function should return 0.
+
+Write an ***\*efficient\**** algorithm for the following assumptions:
+
+> - N is an integer within the range [1..100,000];
+> - each element of array A is an integer within the range [1..1,000,000,000].
+
+
+
+### 코드 문제점
+
+나는 Set을 사용해서 문제를 풀었지만, 아깝게 시간복잡도 이슈로 2문제를 틀리게 되었다.
+
+해당 문제를 엄청빠르게 풀기 위해서는 BooleanArray를 사용하면 아주 빠르게 문제를 풀 수 있었다.
+
+```
+fun solution2(A: IntArray): Int {
+    val n = A.size
+    val seen = BooleanArray(n + 1) // 숫자를 체크할 배열 생성
+
+    for (num in A) {
+        if (num in 1..n && !seen[num]) {
+            seen[num] = true
+        } else {
+            return 0 // 범위 밖이거나 중복이 있는 경우 0 반환
+        }
+    }
+
+    return 1 // 모든 숫자가 정확히 한 번씩 등장했다면 1 반환
+}
+```
+
+### 코드 설명
+
+1. **`BooleanArray(n + 1)` 사용**: 배열의 크기가 `n + 1`인 `seen` 배열을 사용하여, 1부터 `n`까지의 숫자가 등장했는지를 체크합니다. 인덱스 `0`은 사용하지 않기 때문에 크기를 `n + 1`로 설정합니다.
+2. **반복문**: `A` 배열의 각 요소를 확인하면서 해당 숫자가 1부터 `N` 사이에 있는지, 그리고 이전에 등장하지 않았는지를 확인합니다. 조건을 만족하지 않으면 즉시 `0`을 반환합니다.
+3. **결과 반환**: 모든 숫자가 조건을 만족하면 `1`을 반환합니다.
+
+
+
+### **장점 및 특징**
+
+1. **메모리 효율성**
+   - `BooleanArray`는 각 요소를 1비트로 저장하므로 메모리 사용이 매우 효율적입니다. 이는 배열이 `true`와 `false` 값만을 가질 수 있는 경우에 적합합니다.
+2. **빠른 접근 및 수정**
+   - 배열은 메모리의 연속 블록에 저장되므로, 인덱스를 통한 접근 및 수정이 매우 빠릅니다. O(1) 시간 복잡도로 요소를 읽거나 쓸 수 있습니다.
+3. **단순한 데이터 구조**
+   - `BooleanArray`는 단순한 불리언 값을 저장하므로, 복잡한 연산이나 메타데이터 관리가 필요 없습니다. 이로 인해 코드가 간결하고 이해하기 쉽습니다.
+4. **기본 제공되는 메서드**
+   - `BooleanArray`는 배열에 대한 기본적인 연산 메서드(`size`, `indices`, `iterator` 등)를 제공합니다. 또한, 확장 함수도 제공되므로 다양한 배열 작업을 쉽게 수행할 수 있습니다.
+5. **효율적인 초기화**
+   - 배열을 생성할 때 람다식을 사용하여 초기값을 설정할 수 있습니다. 예를 들어, 인덱스에 기반하여 값이 결정되도록 할 수 있습니다.
+6. **기본 타입 배열의 이점**
+   - `BooleanArray`는 객체 배열이 아닌 기본 타입 배열이기 때문에, `Boolean` 클래스의 박싱과 언박싱 작업이 필요 없어서 성능이 향상됩니다.
+
+### **예제**
+
+#### **사용 예제 1: 존재 여부 추적**
+
+다음은 배열 `A`에 1부터 `N`까지의 모든 숫자가 있는지를 확인하는 예제입니다:
+
+```kotlin
+fun isPermutation(A: IntArray): Int {
+    val n = A.size
+    val seen = BooleanArray(n + 1) // 인덱스 0은 사용하지 않음
+
+    for (num in A) {
+        if (num in 1..n) {
+            seen[num] = true
+        } else {
+            return 0 // 범위를 벗어난 값이 있을 경우
+        }
+    }
+
+    for (i in 1..n) {
+        if (!seen[i]) {
+            return 0 // 모든 숫자가 나타나지 않은 경우
+        }
+    }
+
+    return 1 // 모든 숫자가 정확히 한 번씩 등장
+}
+
+```
+#### **사용 예제 2: 짝수 인덱스 값만 `true`로 설정**
+
+다음은 짝수 인덱스의 값만 `true`로 설정하는 예제입니다:
+
+```kotlin
+val booleanArray = BooleanArray(10) { index -> index % 2 == 0 }
+
+// 출력
+for (i in booleanArray.indices) {
+    println("Index $i: ${booleanArray[i]}")
+}
+
+```
+
+이 예제에서는 짝수 인덱스는 `true`, 홀수 인덱스는 `false`로 초기화됩니다.
+
+### **결론**
+
+`BooleanArray`는 메모리 효율적이고 빠른 성능을 제공하며, 불리언 값을 저장하는 데 최적화된 데이터 구조입니다. 배열의 연속적 메모리 블록 덕분에 메모리 접근이 빠르고 간단한 연산을 수행할 때 유용합니다.
