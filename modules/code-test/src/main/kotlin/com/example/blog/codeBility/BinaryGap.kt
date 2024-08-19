@@ -1,4 +1,4 @@
-package com.example.blog.lesson1
+package com.example.blog.codeBility
 
 class BinaryGap {
 
