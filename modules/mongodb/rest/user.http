@@ -1,0 +1,29 @@
+### Get all users
+GET http://localhost:8080/api/users
+
+### Get user by ID
+GET http://localhost:8080/api/users/675921001a6c591c15752e3e
+
+### Get users by name
+GET http://localhost:8080/api/users/search?name=염석현
+
+### Create a new user
+POST http://localhost:8080/api/users
+Content-Type: application/json
+
+{
+  "name": "염석현",
+  "email": "john.doe@example.com"
+}
+
+### Update user
+PUT http://localhost:8080/api/users/675921001a6c591c15752e3e
+Content-Type: application/json
+
+{
+  "name": "염석현",
+  "email": "jane.doe@example.com"
+}
+
+### Delete user
+DELETE http://localhost:8080/api/users/675921001a6c591c15752e3e
