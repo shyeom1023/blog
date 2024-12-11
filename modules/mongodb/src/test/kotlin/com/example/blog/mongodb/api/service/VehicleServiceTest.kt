@@ -46,6 +46,12 @@ class VehicleServiceTest {
     }
 
     @Test
+    fun `Verify data exists`() {
+        val count = mongoTemplate.count(Query(), "vehicles")
+        println("Total documents in 'vehicles' collection: $count")
+    }
+
+    @Test
     fun `MongoTemplate ID 조회 테스트`() {
         val vehicleId = "vehicle_test"
         val query = Query(Criteria.where("id").`is`(vehicleId))
