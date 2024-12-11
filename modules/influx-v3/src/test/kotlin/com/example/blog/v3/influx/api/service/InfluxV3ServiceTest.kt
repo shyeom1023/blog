@@ -14,8 +14,8 @@ class InfluxV3ServiceTest {
 
     @Test
     fun `create test`() {
-        influxV3Service.writeLineProtocol()
-//        influxV3Service.writePoint()
+//        influxV3Service.writeLineProtocol()
+        influxV3Service.writePoint()
     }
 
     @Test

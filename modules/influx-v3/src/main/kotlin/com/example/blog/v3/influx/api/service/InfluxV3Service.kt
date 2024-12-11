@@ -16,9 +16,9 @@ import java.util.stream.Collectors
 class InfluxV3Service(private val influxDBClient: InfluxDBClient) {
     private val log: Logger = LoggerFactory.getLogger(InfluxV3Service::class.java)
     fun writePoint() {
-        val point: Point = Point.measurement("temperature")
-            .setTag("location", "west")
-            .setField("value", 55.15)
+        val point: Point = Point.measurement("equipment")
+            .setTag("prodId", "포크레인A")
+            .setField("temporature", 2000.0)
             .setTimestamp(Instant.now().minusSeconds(-10))
         influxDBClient.writePoint(point)
     }

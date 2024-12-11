@@ -1,8 +1,12 @@
+server:
+  port: 10002
+
 mqtt:
-  url: tcp://aa9dbbc6b391b452b91e2eb461928927-1089919115.ap-northeast-2.elb.amazonaws.com
+  url: tcp://127.0.0.1
   port: 1883 #(1)
   qos: 2
-  topic: test
+  topic:
+    - c
 
 influxdb:
   url: http://localhost:8086

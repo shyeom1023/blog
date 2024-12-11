@@ -32,38 +32,35 @@ class MqttConfig(
 ) {
 
     @Bean
-    fun mqttPahoClientFactory(): MqttPahoClientFactory { // (1)
-        return DefaultMqttPahoClientFactory()
-                .apply {
-                    connectionOptions = connectOptions()
-                }
-    }
-
-    private fun connectOptions(): MqttConnectOptions {
-        return MqttConnectOptions()
-                .apply { // (2)
-                    serverURIs = arrayOf(mqttProperties.connectionInfo())
-                }
-    }
-
-    @Bean
-    fun mqttInboundFlow() = integrationFlow(mqttChannelAdapter()) { // (3)
-        transform(Transformers.fromJson(SampleMessage::class.java)) // (4)
-        handle {
-            sampleMessageHandler.handle(it.payload as SampleMessage) // (5)
+    fun mqttPahoClientFactory(): MqttPahoClientFactory {
+        return DefaultMqttPahoClientFactory().apply {
+            connectionOptions = connectOptions()
         }
     }
 
-    private fun mqttChannelAdapter(): MqttPahoMessageDrivenChannelAdapter { // (6)
+    private fun connectOptions(): MqttConnectOptions {
+        return MqttConnectOptions().apply {
+            serverURIs = arrayOf(mqttProperties.connectionInfo())
+        }
+    }
+
+    @Bean
+    fun mqttChannelAdapter(): MqttPahoMessageDrivenChannelAdapter {
         return MqttPahoMessageDrivenChannelAdapter(
-                MqttClient.generateClientId(),
-                mqttPahoClientFactory(),
-                mqttProperties.topic)
-                .apply {
-                    setCompletionTimeout(5000)
-                    setConverter(DefaultPahoMessageConverter())
-                    setQos(mqttProperties.qos)
-                }
+            MqttClient.generateClientId(),
+            mqttPahoClientFactory(),
+            *mqttProperties.topic
+        ).apply {
+            setCompletionTimeout(5000)
+            setConverter(DefaultPahoMessageConverter())
+            setQos(mqttProperties.qos)
+        }
+    }
+
+    @Bean
+    fun mqttInboundFlow() = integrationFlow(mqttChannelAdapter()) {
+        transform(Transformers.fromJson(SampleMessage::class.java))
+        handle { sampleMessageHandler.handle(it.payload as SampleMessage) }
     }
 
     @Bean
@@ -81,7 +78,7 @@ class MqttConfig(
         return MqttPahoMessageHandler(MqttAsyncClient.generateClientId(), mqttPahoClientFactory())
                 .apply {
                     setAsync(true)
-                    setDefaultTopic(mqttProperties.topic)
+                    setDefaultTopic(mqttProperties.topic.get(0))
                     setDefaultQos(mqttProperties.qos)
                 }
     }

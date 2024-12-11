@@ -1,3 +1,20 @@
 ### publish
-GET http://localhost:8080/publish?message=hello23
+GET {{url}}/publish?message=hello23
+Content-Type: application/json
+
+### publish2
+POST {{url}}/publish
+Content-Type: application/json
+
+{
+  "topic": "b",
+  "message": "{\"title\" : \"title11\", \"content\": \"content22\"}"
+}
+
+### subscribe
+POST {{url}}/subscribe?topic=f
+Content-Type: application/json
+
+### subscribed
+GET {{url}}/subscribed
 Content-Type: application/json

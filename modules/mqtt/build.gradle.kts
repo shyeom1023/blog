@@ -15,6 +15,7 @@ dependencies {
 
     // influx
     implementation("com.influxdb:influxdb-client-java:6.0.0")
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }

@@ -7,10 +7,10 @@ import org.springframework.context.annotation.Configuration
 @Configuration // (1)
 @ConfigurationProperties(prefix = "mqtt")
 data class MqttProperties(
-        var url: String = "",
-        var port: Int = 0,
-        var qos: Int = 0,
-        var topic: String = "",
+    var url: String = "",
+    var port: Int = 0,
+    var qos: Int = 0,
+    var topic: Array<String> = arrayOf(),
 ) {
     fun connectionInfo() = "$url:$port"
 }
