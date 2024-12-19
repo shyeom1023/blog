@@ -9,7 +9,8 @@ listOf(
     "mqtt",
     "influx-v3",
     "code-test",
-    "mongodb"
+    "mongodb",
+    "oauth-2"
 ).forEach {
     include(it)
     project(":$it").projectDir = File("$rootDir/modules/$it")

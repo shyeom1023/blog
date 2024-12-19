@@ -33,16 +33,16 @@ subprojects {
         withType<KotlinCompile> {
             kotlinOptions {
                 freeCompilerArgs = listOf("-Xjsr305=strict")
-                jvmTarget = "1.8"
-//                jvmTarget = "11"
+//                jvmTarget = "1.8"
+                jvmTarget = "17"
             }
         }
 
         withType<JavaCompile> {
-            sourceCompatibility = "1.8"
-            targetCompatibility = "1.8"
-//            sourceCompatibility = "11"
-//            targetCompatibility = "11"
+//            sourceCompatibility = "1.8"
+//            targetCompatibility = "1.8"
+            sourceCompatibility = "17"
+            targetCompatibility = "17"
         }
 
         withType<Test> {

@@ -1,0 +1,47 @@
+###
+GET localhost:9000/v1/users/me
+
+###
+GET http://localhost:9000/login/oauth2/code/client
+
+###
+POST http://localhost:9000/auth?response_type=code
+    &client_id=client-id
+    &redirect_uri=http://localhost:9000/login/oauth2/code/client
+    &scope=read+write
+    &state=xcoiv98y2kd22vusuye3kch
+
+###
+
+# curl -X POST http://localhost:9000/oauth2/token
+#     -H "Content-Type: application/x-www-form-urlencoded"
+#     -d "grant_type=client_credentials&client_id=client-id&client_secret=client-secret"
+POST http://localhost:9000/oauth2/token
+Content-Type: application/x-www-form-urlencoded
+
+grant_type = client_credentials &
+client_id = client-id &
+client_secret = client-secret
+
+###
+
+# curl -X POST http://localhost:9000/oauth2/token
+#  -H "Content-Type: application/x-www-form-urlencoded"
+#  -d "grant_type=client_credentials&client_id=client-id&client_secret=client-secret"
+POST http://localhost:9000/oauth2/token
+Content-Type: application/x-www-form-urlencoded
+#Authorization: Bearer LHQnUtCfjyXM2UI9R_weDvbB4VHmSyGiP224htqTchQ1NnB5O6kCacegN-hFRFnsZ8r6fJCUyUtHoese5e4NG6gKHVA91CzhJczDtlNqcmyLU-oOvF6iAgOZxju8Ows3
+
+grant_type = password &
+username = custom-user &
+password = custom-password &
+client_id = client-id &
+client_secret = client-secret
+
+###
+GET http://localhost:9000/oauth2/authorize
+Authorization: BE Esq0PtktUcotRkkNvYXgOzikcXmQx9Vm9NUvoV2JGSLgwLpZA2cL3k7vmuN3wwDcOLixsfjO_qp89n0EiG5KOxSHr8HUpN4PVKv0p6_YZDcGydFOzv9O4bEi22c1n_JA
+
+###
+GET  http://localhost:9000/.well-known/oauth-authorization-server
+
