@@ -12,6 +12,10 @@ class UserController {
     fun getMyInfo(): UserInfoResponse =
         UserInfoResponse("jay")
 
+    @GetMapping("/me2")
+    fun getMyInfo2(): UserInfoResponse =
+        UserInfoResponse("jay")
+
     data class UserInfoResponse(
         val nickname: String,
     )

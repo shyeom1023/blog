@@ -1,5 +1,12 @@
 ###
-GET localhost:9000/v1/users/me
+GET localhost:9000/v1/users/me2
+Content-Type: application/json
+Authorization: Bearer eyJraWQiOiIzYzEyMDA4Ni03M2ZkLTQ4ZTItYjc4NS03NDQ2ZjVhY2M2NzciLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJjbGllbnQtaWQiLCJhdWQiOiJjbGllbnQtaWQiLCJuYmYiOjE3MzQ2ODQzODUsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6OTAwMCIsImV4cCI6MTczNDY4NjE4NSwiaWF0IjoxNzM0Njg0Mzg1fQ.DAipV03aJoX991cw3dyEng1tN4MEGUG22akHo1OkT8-zBUCtcW7rp5h8YefqEsDbAUjY9E0EFpaxRMY1xdqoSto_iwdXxZw3ABFRt7LUSQEIfYWd7ZuO0ob3TnL1wliZ5VklAYAyOHZ0XHBk9x4YPMKAqENMDmkYmbM0KYdByTrPj3nseJUxw5xXZN54z0hnrIdWnBCS7Lwfv_5SEubanKXZJztUvYpgxcSvx-ucaIQoLEiA2LWCRhqKufIVnXtLYY__GB4iVqZLvPB0sd6hhsNU7Q6VM8Jy-2trK5w1SqW09b6zVFPFR3BPrEWEz5A7NFIOvxwqrCcMjpifF6nS3w
+
+###
+GET localhost:9000/userinfo
+Content-Type: application/json
+Authorization: Bearer eyJraWQiOiI2OTNhNmE1Ny05NzFhLTQxZWQtYTIzMS00MDJhMTI0NjZjZGQiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJjdXN0b20tdXNlciIsImF1ZCI6ImNsaWVudC1pZCIsIm5iZiI6MTczNDY4NDA0MSwic2NvcGUiOlsib3BlbmlkIl0sImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6OTAwMCIsImV4cCI6MTczNDY4NTg0MSwiaWF0IjoxNzM0Njg0MDQxfQ.UprNzmiuHjURK7TX11Wsw3kt4A4rM2u0gsEvlmyvf_5DrgOeRhcUZ5BZ4WJ5uWE1cSxpqbCusQESC_8GTWcBPT4YWtgAIl1xaVifCBrGuauumgH4GSKSlhkBIpLkizwTYDGGWVSTCbGhX_RIMhFRZISO-ISh3Lb-HzgA-BNns7VE5CvQ7F4Vyrq9DyN0KdnqV_-PC-f7bO0CuSO9qv4-xxEWH9Jy86nhS4rXozoMeeuRzlAl6uNRPlZbyw6VtOXiAOQY7BUba0Vsl-02grzICKyGCsTPzWQT7BEP4gn4vNQ3eAMEqh0GxtjpJPpRuBVe6bXY452LrUdFD-S5HPemwQ
 
 ###
 GET http://localhost:9000/login/oauth2/code/client
@@ -24,6 +31,28 @@ client_id = client-id &
 client_secret = client-secret
 
 ###
+POST http://localhost:9000/login
+Content-Type: application/x-www-form-urlencoded
+
+username=custom-user&password=custom-password&_csrf=21b125c8-1643-4337-9cee-20c3e8adf50a
+
+###
+
+# curl -X POST http://localhost:9000/oauth2/token
+#    -H "Content-Type: application/x-www-form-urlencoded"
+#    -H "Authorization: Basic <Base64-encoded client_id:client_secret>"
+#    -d "grant_type=client_credentials"
+POST http://localhost:9000/oauth2/token
+Authorization: Basic <Base64-encoded client-id:client-secret>
+Content-Type: application/x-www-form-urlencoded
+
+grant_type = client_credentials
+
+###
+
+
+
+###
 
 # curl -X POST http://localhost:9000/oauth2/token
 #  -H "Content-Type: application/x-www-form-urlencoded"
@@ -37,6 +66,17 @@ username = custom-user &
 password = custom-password &
 client_id = client-id &
 client_secret = client-secret
+
+###
+POST http://localhost:9000/oauth2/token
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=authorization_code&
+client_id=client-id&
+client_secret=client-secret&
+code=authorization_code&
+redirect_uri=http://localhost:9000/login/oauth2/code/client
+
 
 ###
 GET http://localhost:9000/oauth2/authorize
