@@ -122,11 +122,11 @@ class AuthorizationServerConfig {
     @Bean
     fun tokenSettings(): TokenSettings {
         return TokenSettings.builder()
-            .accessTokenTimeToLive(Duration.ofMinutes(30)) // Access Token 유효기간
-            .refreshTokenTimeToLive(Duration.ofDays(1))   // Refresh Token 유효기간
+            .accessTokenTimeToLive(Duration.ofMinutes(1)) // Access Token 유효기간
+            .refreshTokenTimeToLive(Duration.ofMinutes(2))   // Refresh Token 유효기간
             .reuseRefreshTokens(true)                    // Refresh Token 재사용 여부
             .accessTokenFormat(OAuth2TokenFormat.SELF_CONTAINED) // JWT 사용
-//            .accessTokenFormat(OAuth2TokenFormat.REFERENCE) // JWT 사용
+//            .accessTokenFormat(OAuth2TokenFormat.REFERENCE)
             .build()
     }
 

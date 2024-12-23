@@ -7,9 +7,9 @@ logging:
     org.springframework.security.oauth2: trace  # 추가적인 로그 레벨 설정
 
 
-spring:
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: http://localhost:9000
+#spring:
+#  security:
+#    oauth2:
+#      resourceserver:
+#        jwt:
+#          issuer-uri: http://localhost:9000

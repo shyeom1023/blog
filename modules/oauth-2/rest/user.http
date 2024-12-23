@@ -1,86 +1,76 @@
-###
-GET localhost:9000/v1/users/me2
-Content-Type: application/json
-Authorization: Bearer eyJraWQiOiIzYzEyMDA4Ni03M2ZkLTQ4ZTItYjc4NS03NDQ2ZjVhY2M2NzciLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJjbGllbnQtaWQiLCJhdWQiOiJjbGllbnQtaWQiLCJuYmYiOjE3MzQ2ODQzODUsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6OTAwMCIsImV4cCI6MTczNDY4NjE4NSwiaWF0IjoxNzM0Njg0Mzg1fQ.DAipV03aJoX991cw3dyEng1tN4MEGUG22akHo1OkT8-zBUCtcW7rp5h8YefqEsDbAUjY9E0EFpaxRMY1xdqoSto_iwdXxZw3ABFRt7LUSQEIfYWd7ZuO0ob3TnL1wliZ5VklAYAyOHZ0XHBk9x4YPMKAqENMDmkYmbM0KYdByTrPj3nseJUxw5xXZN54z0hnrIdWnBCS7Lwfv_5SEubanKXZJztUvYpgxcSvx-ucaIQoLEiA2LWCRhqKufIVnXtLYY__GB4iVqZLvPB0sd6hhsNU7Q6VM8Jy-2trK5w1SqW09b6zVFPFR3BPrEWEz5A7NFIOvxwqrCcMjpifF6nS3w
+### authorize code 받기
+GET http://127.0.0.1:9000/oauth2/authorize?response_type=code&client_id=client-id&scope=openid&
+    redirect_uri=http://127.0.0.1:9000
 
-###
-GET localhost:9000/userinfo
-Content-Type: application/json
-Authorization: Bearer eyJraWQiOiI2OTNhNmE1Ny05NzFhLTQxZWQtYTIzMS00MDJhMTI0NjZjZGQiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJjdXN0b20tdXNlciIsImF1ZCI6ImNsaWVudC1pZCIsIm5iZiI6MTczNDY4NDA0MSwic2NvcGUiOlsib3BlbmlkIl0sImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6OTAwMCIsImV4cCI6MTczNDY4NTg0MSwiaWF0IjoxNzM0Njg0MDQxfQ.UprNzmiuHjURK7TX11Wsw3kt4A4rM2u0gsEvlmyvf_5DrgOeRhcUZ5BZ4WJ5uWE1cSxpqbCusQESC_8GTWcBPT4YWtgAIl1xaVifCBrGuauumgH4GSKSlhkBIpLkizwTYDGGWVSTCbGhX_RIMhFRZISO-ISh3Lb-HzgA-BNns7VE5CvQ7F4Vyrq9DyN0KdnqV_-PC-f7bO0CuSO9qv4-xxEWH9Jy86nhS4rXozoMeeuRzlAl6uNRPlZbyw6VtOXiAOQY7BUba0Vsl-02grzICKyGCsTPzWQT7BEP4gn4vNQ3eAMEqh0GxtjpJPpRuBVe6bXY452LrUdFD-S5HPemwQ
+### login
+POST http://127.0.0.1:9000/login
+Content-Type: application/x-www-form-urlencoded
 
-###
-GET http://localhost:9000/login/oauth2/code/client
+username = custom-user &
+password = custom-password
 
-###
-POST http://localhost:9000/auth?response_type=code
-    &client_id=client-id
-    &redirect_uri=http://localhost:9000/login/oauth2/code/client
-    &scope=read+write
-    &state=xcoiv98y2kd22vusuye3kch
+### authorization_code로 token 받기
+POST http://127.0.0.1:9000/oauth2/token
+Content-Type: application/x-www-form-urlencoded
 
-###
+grant_type = authorization_code &
+client_id = client-id &
+client_secret = client-secret &
+redirect_uri = http://127.0.0.1:9000 &
+code = D6ftMXzXJbcPNoMZ9j61-8PE32DmPlDnKZa80-Na0gRl4CqbgH8gqjhneIJQdgPbJbML4c75ieWTJzKvNISBYOJXWz0POLXnB9IkIT7yp0IdEni7TRz4qkVHRkFsCbu-
 
-# curl -X POST http://localhost:9000/oauth2/token
-#     -H "Content-Type: application/x-www-form-urlencoded"
-#     -d "grant_type=client_credentials&client_id=client-id&client_secret=client-secret"
-POST http://localhost:9000/oauth2/token
+### client_credentials로 token 받기
+POST http://127.0.0.1:9000/oauth2/token
 Content-Type: application/x-www-form-urlencoded
 
 grant_type = client_credentials &
 client_id = client-id &
-client_secret = client-secret
+client_secret = client-secret &
+redirect_uri = http://127.0.0.1:9000
 
-###
-POST http://localhost:9000/login
+### security에 미포함 url
+GET localhost:9000/v1/users/me
+Content-Type: application/json
+
+### access token 으로 api 호출하기
+GET localhost:9000/v1/users/me2
+Content-Type: application/json
+Authorization: Bearer eyJraWQiOiI3MjQ5MTk1OC05NWZiLTQ4MzAtYTMxZi1jNWI2NzBhZDM2NTAiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJjbGllbnQtaWQiLCJhdWQiOiJjbGllbnQtaWQiLCJuYmYiOjE3MzQ5MzU3MzcsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6OTAwMCIsImV4cCI6MTczNDkzNTc5NywiaWF0IjoxNzM0OTM1NzM3fQ.LvQUh94HtS8YPywiFXpuMqSX2HfT7muQyCEj8ibK2XWOmAP7z_8KiweupIyM3f9C_A8s4Alaajc4-ffw-CTf2tg3_xRTJW_2Nim__c9-aEPlUed67mVAdnNAMRMlbT09i2xmvkxdxJ7VK3MW1WKJznqH8MxYvaLbS-cxnwR0mnNztoWpUmUYxtFAdV8xGp7tPCb4ts4lJNmz9ySrzuFeOBkvW8EJpHSCvkvEsYLe5G0BuClADkTpeLD-OaQQ1_fwPhqsyWkPYsoZMefx4BVRHLGHMi_VLqDnG6e2Oiy-tKsl91z1-w5ZI1KCBVzPMuz8Y-4WgrSW7k7-HZj0Ee5X-A
+
+### 만료된 토큰 refresh 토큰으로 재발급 받기
+POST http://127.0.0.1:9000/oauth2/token
 Content-Type: application/x-www-form-urlencoded
 
-username=custom-user&password=custom-password&_csrf=21b125c8-1643-4337-9cee-20c3e8adf50a
-
-###
-
-# curl -X POST http://localhost:9000/oauth2/token
-#    -H "Content-Type: application/x-www-form-urlencoded"
-#    -H "Authorization: Basic <Base64-encoded client_id:client_secret>"
-#    -d "grant_type=client_credentials"
-POST http://localhost:9000/oauth2/token
-Authorization: Basic <Base64-encoded client-id:client-secret>
-Content-Type: application/x-www-form-urlencoded
-
-grant_type = client_credentials
-
-###
-
-
-
-###
-
-# curl -X POST http://localhost:9000/oauth2/token
-#  -H "Content-Type: application/x-www-form-urlencoded"
-#  -d "grant_type=client_credentials&client_id=client-id&client_secret=client-secret"
-POST http://localhost:9000/oauth2/token
-Content-Type: application/x-www-form-urlencoded
-#Authorization: Bearer LHQnUtCfjyXM2UI9R_weDvbB4VHmSyGiP224htqTchQ1NnB5O6kCacegN-hFRFnsZ8r6fJCUyUtHoese5e4NG6gKHVA91CzhJczDtlNqcmyLU-oOvF6iAgOZxju8Ows3
-
-grant_type = password &
-username = custom-user &
-password = custom-password &
+grant_type = refresh_token &
 client_id = client-id &
-client_secret = client-secret
+client_secret = client-secret &
+refresh_token = DQN07Ue7dP5P1Pf1wv9rsLKIw03PsUGf9-T-MzKhKWMdPVnyDm2ahlaZ0vqClL5mtFCCfxPZ15N9BQixtaXCXe2mSz-BfpuW2PP6IUSTdwvpaOJ4aF04k6oCYkBX0iT0
 
-###
-POST http://localhost:9000/oauth2/token
+### userinfo
+GET localhost:9000/userinfo
+Content-Type: application/json
+Authorization: Bearer eyJraWQiOiI1M2MxMjk0ZS1lNjNlLTQyZGItYWUzMi1lZTkxOWZlODM3YTgiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJjdXN0b20tdXNlciIsImF1ZCI6ImNsaWVudC1pZCIsIm5iZiI6MTczNDkzMjI0OCwic2NvcGUiOlsib3BlbmlkIl0sImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6OTAwMCIsImV4cCI6MTczNDkzMjMwOCwiaWF0IjoxNzM0OTMyMjQ4fQ.B0765AVxQ5roRr4O795enfOOrtjAOlaEug7i_zQqWBtqEc2xTEnTfuGUpCs-q5weqm6zr3UOfKG8X5WBtRz5ya5d0hNq3KmfcacD5k-OuvRLLVbn27Ncb5Vj7LJINiy8_jAR8FR7xDe3vCSSH_LChXhHFyDCV7FX_uqH1JMMEAt7YqkKD3wT0ST6yau3OdO9RGxHMcmuUBfRk4WoEPip_hb1uMWmCy48v5GxP6fpyaagpbwIWZ7CH7BdCDWCffW_wosiICyDhlp5zua5GzxxsGevFIZJlNCTrE8CXQ4h05XYEJLBECGoFH0rMluRqMSmUbvhODqFsDV7TxoiRt1T_w
+
+### jwk
+GET localhost:9000/oauth2/jwks
+Content-Type: application/json
+#Authorization: Bearer eyJraWQiOiJiZThkNDQ3OS1iODA2LTRjODMtYjI2OS1lODlmNWE0M2E1ZWEiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJjdXN0b20tdXNlciIsImF1ZCI6ImNsaWVudC1pZCIsIm5iZiI6MTczNDkzMzIwNSwic2NvcGUiOlsib3BlbmlkIl0sImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6OTAwMCIsImV4cCI6MTczNDkzMzI2NSwiaWF0IjoxNzM0OTMzMjA1fQ.RnbWF0JEUEl1iPZk7EE9GavuQ8i8lfr1SnzdURbbl5wnqing7qpGft9qbVTcAE0nQ6uIHsl1zpe3wrunp1OH1HbfdYaOVetGkX1qXi_qJEi01Ko4JKH7adoQ6mBiXMYja3aM8mh8O4M26sqH1a5oeDeW43vfXyFIEEFTCe014vhFUKx0jQNosBP39s46PsMv26xnEjbsp35s_FdxYePl_cfA6MKLDwoRin6DaQhi5Lv_mKjOZ-SDbKgVHV2UOXJgGi-M1wHYpNn7zbekWTt7jCvcG9nPYd2VmoOXjeZ-WGF4ekIquoyRI-wJJiKvKpFOr8vvtUy4F9jMoBtRPIj1qg
+
+### introspect
+POST localhost:9000/oauth2/introspect
 Content-Type: application/x-www-form-urlencoded
 
-grant_type=authorization_code&
-client_id=client-id&
-client_secret=client-secret&
-code=authorization_code&
-redirect_uri=http://localhost:9000/login/oauth2/code/client
+client_id = client-id &
+client_secret = client-secret &
+token = eyJraWQiOiI3MjQ5MTk1OC05NWZiLTQ4MzAtYTMxZi1jNWI2NzBhZDM2NTAiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJjbGllbnQtaWQiLCJhdWQiOiJjbGllbnQtaWQiLCJuYmYiOjE3MzQ5MzU3MzcsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6OTAwMCIsImV4cCI6MTczNDkzNTc5NywiaWF0IjoxNzM0OTM1NzM3fQ.LvQUh94HtS8YPywiFXpuMqSX2HfT7muQyCEj8ibK2XWOmAP7z_8KiweupIyM3f9C_A8s4Alaajc4-ffw-CTf2tg3_xRTJW_2Nim__c9-aEPlUed67mVAdnNAMRMlbT09i2xmvkxdxJ7VK3MW1WKJznqH8MxYvaLbS-cxnwR0mnNztoWpUmUYxtFAdV8xGp7tPCb4ts4lJNmz9ySrzuFeOBkvW8EJpHSCvkvEsYLe5G0BuClADkTpeLD-OaQQ1_fwPhqsyWkPYsoZMefx4BVRHLGHMi_VLqDnG6e2Oiy-tKsl91z1-w5ZI1KCBVzPMuz8Y-4WgrSW7k7-HZj0Ee5X-A
 
+### revoke
+POST http://localhost:9000/oauth2/revoke
+Content-Type: application/x-www-form-urlencoded
 
-###
-GET http://localhost:9000/oauth2/authorize
-Authorization: BE Esq0PtktUcotRkkNvYXgOzikcXmQx9Vm9NUvoV2JGSLgwLpZA2cL3k7vmuN3wwDcOLixsfjO_qp89n0EiG5KOxSHr8HUpN4PVKv0p6_YZDcGydFOzv9O4bEi22c1n_JA
+client_id = client-id &
+client_secret = client-secret &
+token = eyJraWQiOiJiZThkNDQ3OS1iODA2LTRjODMtYjI2OS1lODlmNWE0M2E1ZWEiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJjdXN0b20tdXNlciIsImF1ZCI6ImNsaWVudC1pZCIsIm5iZiI6MTczNDkzMzE0OSwic2NvcGUiOlsib3BlbmlkIl0sImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6OTAwMCIsImV4cCI6MTczNDkzMzIwOSwiaWF0IjoxNzM0OTMzMTQ5fQ.pNyfDJAbQwyvmwKDn50LLpazZFjlH7nQn-v0YKDILKNg0TfUnscrLzH4GKGM4F5nKL-hZOhGp9rA7fhKp8Zbe22JXJ2SRRBre0KaSCrjAtlGXYeQdkeM8LqOolR2rG7BECJJTrABVFM-fo82IwEpEZL-ntZS7WKL2Eomn7gjj3iyyyexWavRcOdnAwY30-iz3A0Km4l6g464bEfYgpHLYb8QjaQOiFMHjSZVavkk1DXm-Ttdmj2KoBYD-QSAq8naU2zoLisqs2o00rcEHJGF3UL1OluAVYHyhSEt4rEOTAy-xMbAsyJ8O6s0YARpS5-mdL7EZR5bfZ8G7KYRND3FjQ
 
 ###
 GET  http://localhost:9000/.well-known/oauth-authorization-server
